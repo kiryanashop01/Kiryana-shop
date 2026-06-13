@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apna Kirana - Next-Gen Storefront</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #111827 100%);
+            --glass-panel: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-hover: rgba(255, 255, 255, 0.07);
+            --glow-primary: #10b981;
+            --glow-accent: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --white: #ffffff;
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cabinet Grotesk', 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NEXT-LEVEL 3D EXPLOSIVE PORTAL LOADER --- */
+        #portal-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #070a13;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+            overflow: hidden;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .viewport-3d {
+            position: relative;
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            height: 300px;
+        }
+
+        .quantum-sphere {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #00f2fe, #4facfe, #1e1b4b);
+            box-shadow: 0 0 30px rgba(79, 172, 254, 0.6), inset -5px -5px 15px rgba(0,0,0,0.8);
+            position: absolute;
+            transform-style: preserve-3d;
+            animation: hyperBounce 1.4s cubic-bezier(0.28, 0.11, 0.32, 1) infinite alternate;
+        }
+
+        .quantum-shadow {
+            width: 80px;
+            height: 12px;
+            background: radial-gradient(ellipse at center, rgba(0, 242, 254, 0.4) 0%, rgba(0,0,0,0) 70%);
+            position: absolute;
+            bottom: 30px;
+            filter: blur(2px);
+            animation: shadowPulse 1.4s cubic-bezier(0.28, 0.11, 0.32, 1) infinite alternate;
+        }
+
+        /* Exploding Shockwave State Trigger */
+        .detonate-sequence {
+            animation: massExpulsion 0.6s forwards cubic-bezier(0.1, 0.8, 0.1, 1) !important;
+        }
+
+        .shockwave-ring {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 2px solid #00f2fe;
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(1);
+            pointer-events: none;
+        }
+
+        .trigger-wave {
+            animation: waveExpand 0.7s cubic-bezier(0.1, 0.8, 0.1, 1) forwards;
+        }
+
+        .kinetic-logo {
+            opacity: 0;
+            transform: translateY(30px) scale(0.85);
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-align: center;
+            text-shadow: 0 0 40px rgba(16, 185, 129, 0.4);
+            position: absolute;
+        }
+        .kinetic-logo span { color: var(--glow-accent); }
+        .logo-rise { animation: typographyRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; }
+
+        @keyframes hyperBounce {
+            0% { transform: translateY(-140px) scaleX(0.92) scaleY(1.08); }
+            85% { transform: translateY(60px) scaleX(1) scaleY(1); }
+            100% { transform: translateY(80px) scaleX(1.3) scaleY(0.7); filter: hue-rotate(45deg); }
+        }
+
+        @keyframes shadowPulse {
+            0% { transform: scale(0.2); opacity: 0.1; }
+            100% { transform: scale(1.4); opacity: 0.9; }
+        }
+
+        @keyframes massExpulsion {
+            0% { transform: translateY(80px) scale(1); filter: brightness(1); }
+            40% { filter: brightness(3) blur(1px); background: #ffffff; }
+            100% { transform: translateY(80px) scale(25); opacity: 0; }
+        }
+
+        @keyframes waveExpand {
+            0% { opacity: 1; transform: scale(1); border-width: 8px; }
+            100% { opacity: 0; transform: scale(45); border-width: 0.1px; filter: blur(4px); }
+        }
+
+        @keyframes typographyRise {
+            0% { opacity: 0; transform: translateY(30px) scale(0.85); filter: blur(5px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* --- PREMIUM STOREFRONT UI CONTENT --- */
+        header {
+            background: rgba(15, 23, 42, 0.60);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 25px 50px;
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+        }
+
+        .header-content {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #10b981, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+        .header-logo span { color: var(--glow-accent); -webkit-text-fill-color: initial; }
+
+        .app-workspace {
+            max-width: 1500px;
+            margin: 50px auto;
+            padding: 0 50px;
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 50px;
+        }
+
+        @media(max-width: 1150px) {
+            .app-workspace { grid-template-columns: 1fr; padding: 0 20px; }
+            header { padding: 20px; }
+        }
+
+        .section-headline {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-headline::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background: linear-gradient(to right, var(--glass-border), transparent);
+        }
+
+        /* Luxury Row Design Configuration */
+        .rows-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .premium-row-card {
+            background: var(--glass-panel);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 16px 28px;
+            display: grid;
+            grid-template-columns: 2.5fr 1fr 1.2fr 1fr;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        @media(max-width: 650px) {
+            .premium-row-card {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+            .item-identity { justify-content: center; flex-direction: column; }
+            .quantity-dialer { margin: 0 auto; }
+        }
+
+        .premium-row-card:hover {
+            background: var(--glass-hover);
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: scale(1.01);
+        }
+
+        .item-identity {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .display-frame {
+            width: 75px;
+            height: 75px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .display-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .premium-row-card:hover .display-frame img {
+            transform: scale(1.1);
+        }
+
+        .item-title-string {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .item-cost-string {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--glow-primary);
+            text-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Interactive Counter Module */
+        .quantity-dialer {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            width: fit-content;
+            overflow: hidden;
+        }
+
+        .dial-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            width: 35px;
+            height: 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+        .dial-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .dial-val {
+            width: 40px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .action-cell {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .add-cart-cta {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .add-cart-cta:hover {
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+            transform: translateY(-1px);
+        }
+
+        /* Glassmorphic Shopping Console */
+        .checkout-console-panel {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--border-radius);
+            padding: 35px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            height: fit-content;
+            position: sticky;
+            top: 140px;
+        }
+
+        .console-header {
+            font-size: 1.4rem;
+            font-weight: 800;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .console-scroll-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 25px;
+        }
+
+        .empty-basket-view {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 50px 0;
+            font-style: italic;
+        }
+
+        .basket-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .aggregate-invoice-card {
+            background: rgba(0,0,0,0.15);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .invoice-line {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 800;
+            font-size: 1.4rem;
+        }
+
+        .whatsapp-router-cta {
+            background: linear-gradient(135deg, #25D366 0%, #1cbd55 100%);
+            color: var(--white);
+            border: none;
+            padding: 18px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition-smooth);
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.2);
+        }
+
+        .whatsapp-router-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+        }
+
+        /* --- DYNAMIC PREMIUM FOOTER INFRASTRUCTURE --- */
+        footer {
+            background: #090d16;
+            border-top: 1px solid var(--glass-border);
+            padding: 80px 50px;
+            margin-top: 120px;
+        }
+
+        .footer-grid-layout {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 80px;
+        }
+
+        @media(max-width: 900px) {
+            .footer-grid-layout { grid-template-columns: 1fr; gap: 40px; }
+            footer { padding: 40px 20px; }
+        }
+
+        .footer-node h4 {
+            font-size: 1.4rem;
+            color: var(--glow-primary);
+            margin-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .footer-node p {
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            font-size: 1.05rem;
+        }
+
+        /* Map Embed Wrapper */
+        .interactive-maps-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            transition: var(--transition-smooth);
+            text-align: center;
+        }
+
+        .interactive-maps-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: var(--glow-accent);
+        }
+
+        .map-anchor-tag {
+            text-decoration: none;
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        .map-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Interactive Kinematic Launcher Overlay -->
+<div id="portal-loader">
+    <div class="viewport-3d" id="stage-3d">
+        <div class="quantum-shadow" id="core-shadow"></div>
+        <div class="quantum-sphere" id="core-node"></div>
+        <div class="shockwave-ring" id="wave-node"></div>
+    </div>
+    <div class="kinetic-logo" id="brand-txt">Apna <span>Kirana</span></div>
+</div>
+
+<!-- Main Application Interface Header -->
+<header>
+    <div class="header-content">
+        <div class="header-logo">Apna<span>Kirana</span></div>
+    </div>
+</header>
+
+<!-- Main Functional App Architecture Workspace -->
+<div class="app-workspace">
+    
+    <!-- Item Ledger Catalog Column -->
+    <div class="catalog-column">
+        <div class="section-headline">Premium Store Rows</div>
+        <div class="rows-stack" id="dynamic-row-injector">
+            <!-- Render Target Matrix -->
+        </div>
+    </div>
+
+    <!-- Right Component Shopping Console -->
+    <div class="checkout-console-panel">
+        <div class="console-header">
+            <span>Checkout Basket</span>
+            <span id="basket-counter-node" style="color: var(--glow-accent);">0</span>
+        </div>
+        <div class="console-scroll-container" id="basket-render-view">
+            <p class="empty-basket-view">Your checking console is currently vacant</p>
+        </div>
+        <div class="aggregate-invoice-card">
+            <div class="invoice-line">
+                <span>Grand Total:</span>
+                <span id="computed-grand-total">₹0</span>
+            </div>
+        </div>
+        <button class="whatsapp-router-cta" onclick="forwardOrderToWhatsappChannel()">
+            Submit Order to WhatsApp
+        </button>
+    </div>
+</div>
+
+<!-- Core Anchor Metadata & Location Footer -->
+<footer>
+    <div class="footer-grid-layout">
+        <div class="footer-node">
+            <h4>Apna Kirana Metadata Directory</h4>
+            <p><strong>Hotline Vector:</strong> +91 98765 43210</p>
+            <p><strong>Communications Inbox:</strong> delivery@apnakiranafake.com</p>
+            <p><strong>Operational Window:</strong> 08:00 AM – 10:00 PM (IST)</p>
+        </div>
+        <div class="footer-node">
+            <h4>Geocentric Map Gateway</h4>
+            <div class="interactive-maps-card">
+                <a href="https://www.google.com/maps/search/?api=1&query=Shanti+Nagar+New+Delhi" target="_blank" class="map-anchor-tag">
+                    <span>📍 Launch Live Navigation Route</span>
+                    <span class="map-subtitle">Clicking instantly prompts standard external Google Maps deep-link redirection.</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Comprehensive Dataset mapping explicit item definitions to dedicated High-Res stock photos
+    const masterStockIndex = [
+        { id: 1, name: "Oyes Snack Packet", price: 10, img: "https://images.unsplash.com/photo-1621447509376-778642d622a4?auto=format&fit=crop&w=250&q=80" },
+        { id: 2, name: "Polo Mint Strips", price: 5, img: "https://images.unsplash.com/photo-1581798459219-318e76aecc7b?auto=format&fit=crop&w=250&q=80" },
+        { id: 3, name: "Lays Potato Chips", price: 10, img: "https://images.unsplash.com/photo-1566478989037-eec170784d4b?auto=format&fit=crop&w=250&q=80" },
+        { id: 4, name: "Uncle Chips Crunchy Flavour", price: 10, img: "https://images.unsplash.com/photo-1600957244641-f002887d3ad7?auto=format&fit=crop&w=250&q=80" },
+        { id: 5, name: "Maggi Instant Noodles", price: 14, img: "https://images.unsplash.com/photo-1612966608997-30d5292884c0?auto=format&fit=crop&w=250&q=80" },
+        { id: 6, name: "Britannia Glucose Biscuits", price: 10, img: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=250&q=80" },
+        { id: 7, name: "Premium CTC Tea Sachet", price: 10, img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=250&q=80" },
+        { id: 8, name: "Lifebuoy Total Soap", price: 30, img: "https://images.unsplash.com/photo-1607006342456-ba275cd34276?auto=format&fit=crop&w=250&q=80" },
+        { id: 9, name: "Clinic Plus Shampoo", price: 2, img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=250&q=80" },
+        { id: 10, name: "Amla Herbal Hair Oil", price: 50, img: "https://images.unsplash.com/photo-1608248597481-496100c80836?auto=format&fit=crop&w=250&q=80" },
+        { id: 11, name: "Iodized Table Salt (1kg)", price: 20, img: "https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=250&q=80" },
+        { id: 12, name: "Refined Pure Sugar (1kg)", price: 45, img: "https://images.unsplash.com/photo-1590005354167-6da97870c913?auto=format&fit=crop&w=250&q=80" },
+        { id: 13, name: "Moong Dal Lentils (1kg)", price: 120, img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=250&q=80" },
+        { id: 14, name: "Chana Dal Premium (1kg)", price: 90, img: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=250&q=80" },
+        { id: 15, name: "Basmati Rice Grain (1kg)", price: 50, img: "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=250&q=80" },
+        { id: 16, name: "Wheat Atta Flour (1kg)", price: 35, img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=250&q=80" },
+        { id: 17, name: "Mustard Cooking Oil", price: 60, img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=250&q=80" },
+        { id: 18, name: "Colgate Mint Toothpaste", price: 30, img: "https://images.unsplash.com/photo-1559599141-3816a0b26c11?auto=format&fit=crop&w=250&q=80" },
+        { id: 19, name: "Medium Bristle Toothbrush", price: 20, img: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=250&q=80" },
+        { id: 20, name: "Vim Lemon Dishwash Bar", price: 10, img: "https://images.unsplash.com/photo-1585060544812-6b45742d762f?auto=format&fit=crop&w=250&q=80" },
+        { id: 21, name: "Single Line Notebook", price: 20, img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=250&q=80" },
+        { id: 22, name: "Fine Ballpoint Pen", price: 5, img: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=250&q=80" },
+        { id: 23, name: "Dark Graphite Pencil", price: 5, img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=250&q=80" },
+        { id: 24, name: "Non-Dust Soft Eraser", price: 5, img: "https://images.unsplash.com/photo-1601987077677-5346c0c57d3f?auto=format&fit=crop&w=250&q=80" },
+        { id: 25, name: "Steel Blade Sharpener", price: 5, img: "https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?auto=format&fit=crop&w=250&q=80" },
+        { id: 26, name: "Plastic Measuring Ruler", price: 10, img: "https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?auto=format&fit=crop&w=250&q=80" },
+        { id: 27, name: "Fevistick Solid Glue Stick", price: 20, img: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=250&q=80" },
+        { id: 28, name: "Refill Stapler Pins Box", price: 15, img: "https://images.unsplash.com/photo-1543269608-fa342a555a88?auto=format&fit=crop&w=250&q=80" },
+        { id: 29, name: "Glossy Lamination Sheet", price: 10, img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=250&q=80" },
+        { id: 30, name: "Impression Carbon Paper", price: 5, img: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=250&q=80" },
+        { id: 31, name: "Matchbox Safety Pack", price: 2, img: "https://images.unsplash.com/photo-1595475207225-428b62bda831?auto=format&fit=crop&w=250&q=80" },
+        { id: 32, name: "Assorted Mix Sweet Candies", price: 1, img: "https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&w=250&q=80" },
+        { id: 33, name: "Namkeen Spicy Mixture Pack", price: 10, img: "https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=250&q=80" },
+        { id: 34, name: "Mineral Drinking Water", price: 20, img: "https://images.unsplash.com/photo-1608885898957-a599fb1b4641?auto=format&fit=crop&w=250&q=80" }
+    ];
+
+    let shoppingCartMap = {};
+
+    // Physics Animation Driver Logic
+    window.addEventListener('DOMContentLoaded', () => {
+        const sphere = document.getElementById('core-node');
+        const shadow = document.getElementById('core-shadow');
+        const textLogo = document.getElementById('brand-txt');
+        const wave = document.getElementById('wave-node');
+        const loader = document.getElementById('portal-loader');
+
+        // Detonate the physics structure into an explosion particle after exact loop cycles
+        setTimeout(() => {
+            sphere.style.animation = 'none';
+            shadow.style.animation = 'none';
+            shadow.style.opacity = '0';
+            
+            sphere.classList.add('detonate-sequence');
+            wave.classList.add('trigger-wave');
+            
+            setTimeout(() => {
+                textLogo.classList.add('logo-rise');
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.remove(), 800);
+                }, 1600);
+            }, 350);
+        }, 2600);
+
+        buildRowInterface();
+    });
+
+    // Populate UI Canvas Matrix using Premium Row Template Architecture
+    function buildRowInterface() {
+        const insertionTarget = document.getElementById('dynamic-row-injector');
+        insertionTarget.innerHTML = masterStockIndex.map(item => {
+            shoppingCartMap[item.id] = 0; // Initialize tracking matrix counter references
+            return `
+                <div class="premium-row-card">
+                    <div class="item-identity">
+                        <div class="display-frame">
+                            <img src="${item.img}" alt="${item.name}" loading="lazy">
+                        </div>
+                        <div class="item-title-string">${item.name}</div>
+                    </div>
+                    <div class="item-cost-string">₹${item.price}</div>
+                    <div class="quantity-dialer">
+                        <button class="dial-btn" onclick="modifyDialCount(${item.id}, -1)">−</button>
+                        <div class="dial-val" id="dial-val-${item.id}">0</div>
+                        <button class="dial-btn" onclick="modifyDialCount(${item.id}, 1)">+</button>
+                    </div>
+                    <div class="action-cell">
+                        <button class="add-cart-cta" onclick="addSelectedToCart(${item.id})">Add</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function modifyDialCount(id, variance) {
+        const targetView = document.getElementById(`dial-val-${id}`);
+        let parsedVal = parseInt(targetView.innerText) + variance;
+        if(parsedVal < 0) parsedVal = 0;
+        targetView.innerText = parsedVal;
+    }
+
+    function addSelectedToCart(id) {
+        const selectedQty = parseInt(document.getElementById(`dial-val-${id}`).innerText);
+        if(selectedQty === 0) {
+            alert("Set dynamic quantity count higher than 0 using +/- controls first!");
+            return;
+        }
+        shoppingCartMap[id] += selectedQty;
+        document.getElementById(`dial-val-${id}`).innerText = 0; // Reset row line counter context
+        recomputeConsoleInvoiceUI();
+    }
+
+    function removeRowAggregate(id) {
+        shoppingCartMap[id] = 0;
+        recomputeConsoleInvoiceUI();
+    }
+
+    // Dynamic compilation matrix calculations mapping console elements
+    function recomputeConsoleInvoiceUI() {
+        const viewPort = document.getElementById('basket-render-view');
+        const viewTotal = document.getElementById('computed-grand-total');
+        const viewCountBadge = document.getElementById('basket-counter-node');
+
+        let aggregateUnitCount = 0;
+        let cumulativeInvoicePrice = 0;
+        let runningHTMLOutput = "";
+
+        masterStockIndex.forEach(product => {
+            const currentUnits = shoppingCartMap[product.id];
+            if(currentUnits > 0) {
+                aggregateUnitCount += currentUnits;
+                const batchCost = product.price * currentUnits;
+                cumulativeInvoicePrice += batchCost;
+
+                runningHTMLOutput += `
+                    <div class="basket-item-row">
+                        <div>
+                            <strong>${product.name}</strong><br>
+                            <span style="color: var(--text-muted); font-size:0.9rem;">₹${product.price} × ${currentUnits}</span>
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="font-weight:700; color:var(--glow-primary);">₹${batchCost}</span><br>
+                            <span style="color:#ef4444; font-size:0.8rem; cursor:pointer;" onclick="removeRowAggregate(${product.id})">Remove</span>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        viewCountBadge.innerText = aggregateUnitCount;
+
+        if(aggregateUnitCount === 0) {
+            viewPort.innerHTML = `<p class="empty-basket-view">Your checking console is currently vacant</p>`;
+            viewTotal.innerText = "₹0";
+            return;
+        }
+
+        viewPort.innerHTML = runningHTMLOutput;
+        viewTotal.innerText = `₹${cumulativeInvoicePrice}`;
+    }
+
+    // Encodes dataset array parameters directly into official WhatsApp payload structures
+    function forwardOrderToWhatsappChannel() {
+        let activeOrderFlag = false;
+        let payloadString = "⚡ *Next-Gen Order Dispatch - Apna Kirana* \n";
+        payloadString += "━━━━━━━━━━━━━━━━━━━━━\n";
+
+        let invoiceTallies = 0;
+        let enumerationIndex = 1;
+
+        masterStockIndex.forEach(item => {
+            const exactUnits = shoppingCartMap[item.id];
+            if(exactUnits > 0) {
+                activeOrderFlag = true;
+                const netItemPrice = item.price * exactUnits;
+                invoiceTallies += netItemPrice;
+                payloadString += `${enumerationIndex}. 📦 *${item.name}*\n     Qty: [ ${exactUnits} ] ➔ *₹${netItemPrice}*\n`;
+                enumerationIndex++;
+            }
+        });
+
+        payloadString += "━━━━━━━━━━━━━━━━━━━━━\n";
+        payloadString += `✨ *Grand Invoiced Total: ₹${invoiceTallies}*\n\n`;
+        payloadString += "Please flag package execution directly for transit dispatch!";
+
+        if(!activeOrderFlag) {
+            alert("Console processing execution dropped: Basket array has zero mapped values.");
+            return;
+        }
+
+        const terminalNodePhone = "919876543210"; // Fake business recipient endpoint profile
+        const routeString = `https://api.whatsapp.com/send?phone=${terminalNodePhone}&text=${encodeURIComponent(payloadString)}`;
+        
+        window.open(routeString, '_blank');
+    }
+</script>
+</body>
+</html>
