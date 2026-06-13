@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apna Kirana - Premium Fresh Storefront</title>
+    <style>
+        :root {
+            --bg-cream: #fdfaf5;
+            --text-dark: #3d2514;
+            --text-muted: #7a665a;
+            --accent-brown: #8b5a2b;
+            --accent-light: #f4ece1;
+            --white: #ffffff;
+            --bag-bg: #2c1a11;
+            --border-radius: 8px;
+            --shadow-sm: 0 4px 12px rgba(61, 37, 20, 0.05);
+            --shadow-md: 0 12px 24px rgba(61, 37, 20, 0.08);
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* --- CINEMATIC 3D EXPLOSION INTRO SPLASH --- */
+        #intro-portal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #fdfaf5;
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .stage-3d {
+            position: relative;
+            width: 200px;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bouncing-sphere {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #bc6c25, #8b5a2b);
+            box-shadow: inset -6px -6px 15px rgba(0,0,0,0.4), 0 15px 25px rgba(139,90,43,0.3);
+            position: absolute;
+            animation: cinematicBounce 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+        }
+
+        .ground-shadow {
+            width: 60px;
+            height: 8px;
+            background: radial-gradient(ellipse at center, rgba(61,37,20,0.25) 0%, rgba(0,0,0,0) 70%);
+            position: absolute;
+            bottom: 30px;
+            filter: blur(1px);
+            animation: shadowDeform 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+        }
+
+        .burst-active {
+            animation: burstDissolve 0.4s forwards cubic-bezier(0.1, 0.8, 0.1, 1) !important;
+        }
+
+        .shockwave {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #bc6c25;
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(1);
+        }
+
+        .wave-trigger {
+            animation: waveExpand 0.6s cubic-bezier(0.1, 0.8, 0.1, 1) forwards;
+        }
+
+        .popped-brand {
+            opacity: 0;
+            transform: scale(0.7);
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .popped-brand span {
+            background: #8b5a2b;
+            color: #ffffff;
+            padding: 2px 10px;
+            border-radius: 4px;
+            margin-left: 4px;
+        }
+
+        .brand-reveal {
+            animation: brandSpring 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes cinematicBounce {
+            0% { transform: translateY(-120px) scaleX(0.95) scaleY(1.05); }
+            85% { transform: translateY(40px) scaleX(1) scaleY(1); }
+            100% { transform: translateY(55px) scaleX(1.3) scaleY(0.7); }
+        }
+
+        @keyframes shadowDeform {
+            0% { transform: scale(0.3); opacity: 0.1; }
+            100% { transform: scale(1.3); opacity: 0.6; }
+        }
+
+        @keyframes burstDissolve {
+            0% { transform: translateY(55px) scale(1); filter: brightness(1); }
+            50% { filter: brightness(2); background: #ffffff; }
+            100% { transform: translateY(55px) scale(8); opacity: 0; filter: blur(4px); }
+        }
+
+        @keyframes waveExpand {
+            0% { opacity: 1; transform: scale(1); border-width: 4px; }
+            100% { opacity: 0; transform: scale(15); border-width: 0.5px; }
+        }
+
+        @keyframes brandSpring {
+            0% { opacity: 0; transform: scale(0.7); filter: blur(3px); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0); }
+        }
+
+        /* --- APPLICATION NAVBAR & HERO --- */
+        header {
+            background: var(--white);
+            border-bottom: 1px solid var(--accent-light);
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-main {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .logo-main span {
+            background: var(--accent-brown);
+            color: var(--white);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .nav-links span { cursor: pointer; transition: var(--transition); }
+        .nav-links span:hover, .nav-links .active { color: var(--accent-brown); }
+
+        .hero-banner {
+            background: linear-gradient(rgba(61, 37, 20, 0.6), rgba(61, 37, 20, 0.75)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 20px;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero-banner h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .hero-banner p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto 25px auto;
+        }
+
+        .hero-btn {
+            background: var(--accent-brown);
+            color: var(--white);
+            padding: 12px 28px;
+            border: none;
+            font-weight: 600;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .hero-btn:hover { background: #6f4722; }
+
+        /* --- PRODUCT CATALOG GRID (BAKERY CARD MATCH) --- */
+        .catalog-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: var(--text-dark);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(139, 90, 43, 0.1);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 180px;
+            background: var(--bg-cream);
+            overflow: hidden;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .img-container img {
+            transform: scale(1.05);
+        }
+
+        .product-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 15px 10px 5px 10px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .add-btn {
+            background: var(--accent-brown);
+            color: var(--white);
+            border: none;
+            padding: 10px 24px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 85%;
+            margin: 0 auto;
+            transition: var(--transition);
+        }
+
+        .add-btn:hover { background: #6f4722; }
+
+        /* --- YOUR SHOPPING BAG MODULE (REPLICATING 1000000592.jpg) --- */
+        .shopping-bag-container {
+            background-color: var(--bag-bg);
+            color: var(--white);
+            padding: 60px 20px;
+            margin-top: 80px;
+        }
+
+        .bag-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .bag-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 35px;
+            letter-spacing: -0.5px;
+        }
+
+        .bag-rows-stack {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bag-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bag-item-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .bag-thumb {
+            width: 45px;
+            height: 45px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .bag-item-title {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .bag-qty-multiplier {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .bag-item-price {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .bag-blank {
+            text-align: center;
+            padding: 40px 0;
+            color: rgba(255,255,255,0.4);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        .bag-summary-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 25px;
+        }
+
+        .bag-total-line {
+            display: flex;
+            gap: 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .checkout-whatsapp-btn {
+            background-color: #bc6c25;
+            color: var(--white);
+            border: none;
+            padding: 12px 60px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .checkout-whatsapp-btn:hover {
+            background-color: #9e561c;
+        }
+
+        /* --- CONTACT & MAP LINKS FOOTER --- */
+        .contact-footer {
+            background: var(--bg-cream);
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid var(--accent-light);
+        }
+
+        .contact-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 40px;
+        }
+
+        .footer-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        .footer-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .footer-node:hover .icon-marker {
+            transform: scale(1.1);
+        }
+
+        .icon-marker {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            transition: var(--transition);
+        }
+
+        .footer-node strong {
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Dynamic Cinematic Loader Portal -->
+<div id="intro-portal">
+    <div class="stage-3d" id="viewport-box">
+        <div class="ground-shadow" id="shadow-element"></div>
+        <div class="bouncing-sphere" id="sphere-element"></div>
+        <div class="shockwave" id="shockwave-element"></div>
+    </div>
+    <div class="popped-brand" id="brand-text-element">Apna<span>Kirana</span></div>
+</div>
+
+<!-- Header Navigation Module -->
+<header>
+    <div class="nav-container">
+        <a href="#" class="logo-main">Apna<span>Kirana</span></a>
+        <div class="nav-links">
+            <span class="active">Home</span>
+            <span>Catalog</span>
+            <span>Contact</span>
+        </div>
+    </div>
+</header>
+
+<!-- Image Grid Hero Frame -->
+<div class="hero-banner">
+    <h2>Welcome to Apna Kirana</h2>
+    <p>Premium grocery essentials, handpicked items, and household provisions delivered instantly to your doorstep.</p>
+    <button class="hero-btn" onclick="document.getElementById('catalog').scrollIntoView({behavior: 'smooth'})">Explore Our Catalog</button>
+</div>
+
+<!-- Primary Inventory Section (Layout Inspired by Bakery Bestsellers Grid) -->
+<div class="catalog-section" id="catalog">
+    <h3 class="section-title">Our Provisions Catalog</h3>
+    <div class="products-grid" id="catalog-injector">
+        <!-- Render Matrix dynamically loaded below -->
+    </div>
+</div>
+
+<!-- Replicated Shopping Bag Section (Matching dark footer row format from 1000000592.jpg) -->
+<div class="shopping-bag-container">
+    <div class="bag-inner">
+        <h3 class="bag-title">Your Shopping Bag</h3>
+        <div class="bag-rows-stack" id="bag-injector">
+            <p class="bag-blank">Your shopping bag is currently empty</p>
+        </div>
+        <div class="bag-summary-zone">
+            <div class="bag-total-line">
+                <span>Total:</span>
+                <span id="bag-computed-total">₹0.00</span>
+            </div>
+            <button class="checkout-whatsapp-btn" onclick="dispatchOrderToWhatsApp()">Checkout</button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Navigation / Contacts Map Section -->
+<div class="contact-footer">
+    <h3 class="contact-title">Contact Us</h3>
+    <div class="footer-grid">
+        <a href="https://www.google.com/maps/search/?api=1&query=Shanti+Nagar+New+Delhi" target="_blank" class="footer-node">
+            <span class="icon-marker">📍</span>
+            <strong>123 Grocery Street,</strong>
+            <span>Shanti Nagar, New Delhi</span>
+        </a>
+        <div class="footer-node">
+            <span class="icon-marker">✉️</span>
+            <strong>orders@apnakirana.com</strong>
+        </div>
+        <div class="footer-node">
+            <span class="icon-marker">📞</span>
+            <strong>+91 98765 43210</strong>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Comprehensive Dataset mapping explicit item definitions to High-Res stock photos matching item rows
+    const customStockIndex = [
+        { id: 1, name: "Oyes Snack Packet", price: 10, img: "https://images.unsplash.com/photo-1621447509376-778642d622a4?auto=format&fit=crop&w=300&q=80" },
+        { id: 2, name: "Polo Mint Strips", price: 5, img: "https://images.unsplash.com/photo-1581798459219-318e76aecc7b?auto=format&fit=crop&w=300&q=80" },
+        { id: 3, name: "Lays Potato Chips", price: 10, img: "https://images.unsplash.com/photo-1566478989037-eec170784d4b?auto=format&fit=crop&w=300&q=80" },
+        { id: 4, name: "Uncle Chips Crunchy", price: 10, img: "https://images.unsplash.com/photo-1600957244641-f002887d3ad7?auto=format&fit=crop&w=300&q=80" },
+        { id: 5, name: "Maggi Noodles Packet", price: 14, img: "https://images.unsplash.com/photo-1612966608997-30d5292884c0?auto=format&fit=crop&w=300&q=80" },
+        { id: 6, name: "Britannia Biscuits", price: 10, img: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=300&q=80" },
+        { id: 7, name: "Premium CTC Tea Sachet", price: 10, img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=300&q=80" },
+        { id: 8, name: "Lifebuoy Total Soap", price: 30, img: "https://images.unsplash.com/photo-1607006342456-ba275cd34276?auto=format&fit=crop&w=300&q=80" },
+        { id: 9, name: "Clinic Plus Shampoo", price: 2, img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?auto=format&fit=crop&w=300&q=80" },
+        { id: 10, name: "Amla Herbal Hair Oil", price: 50, img: "https://images.unsplash.com/photo-1608248597481-496100c80836?auto=format&fit=crop&w=300&q=80" },
+        { id: 11, name: "Iodized Table Salt (1kg)", price: 20, img: "https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=300&q=80" },
+        { id: 12, name: "Refined Pure Sugar (1kg)", price: 45, img: "https://images.unsplash.com/photo-1590005354167-6da97870c913?auto=format&fit=crop&w=300&q=80" },
+        { id: 13, name: "Moong Dal Lentils (1kg)", price: 120, img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=300&q=80" },
+        { id: 14, name: "Chana Dal Premium (1kg)", price: 90, img: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=300&q=80" },
+        { id: 15, name: "Basmati Rice Grain (1kg)", price: 50, img: "https://images.unsplash.com/photo-1591814468924-caf88d1232e1?auto=format&fit=crop&w=300&q=80" },
+        { id: 16, name: "Wheat Atta Flour (1kg)", price: 35, img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=80" },
+        { id: 17, name: "Mustard Cooking Oil", price: 60, img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=300&q=80" },
+        { id: 18, name: "Colgate Mint Toothpaste", price: 30, img: "https://images.unsplash.com/photo-1559599141-3816a0b26c11?auto=format&fit=crop&w=300&q=80" },
+        { id: 19, name: "Medium Toothbrush", price: 20, img: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?auto=format&fit=crop&w=300&q=80" },
+        { id: 20, name: "Vim Lemon Dishwash", price: 10, img: "https://images.unsplash.com/photo-1585060544812-6b45742d762f?auto=format&fit=crop&w=300&q=80" },
+        { id: 21, name: "Single Line Notebook", price: 20, img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?auto=format&fit=crop&w=300&q=80" },
+        { id: 22, name: "Fine Ballpoint Pen", price: 5, img: "https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=300&q=80" },
+        { id: 23, name: "Dark Graphite Pencil", price: 5, img: "https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=300&q=80" },
+        { id: 24, name: "Non-Dust Soft Eraser", price: 5, img: "https://images.unsplash.com/photo-1601987077677-5346c0c57d3f?auto=format&fit=crop&w=300&q=80" },
+        { id: 25, name: "Steel Blade Sharpener", price: 5, img: "https://images.unsplash.com/photo-1519750157634-b6d493a0f77c?auto=format&fit=crop&w=300&q=80" },
+        { id: 26, name: "Plastic Measuring Ruler", price: 10, img: "https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?auto=format&fit=crop&w=300&q=80" },
+        { id: 27, name: "Fevistick Solid Glue", price: 20, img: "https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=300&q=80" },
+        { id: 28, name: "Stapler Pins Box", price: 15, img: "https://images.unsplash.com/photo-1543269608-fa342a555a88?auto=format&fit=crop&w=300&q=80" },
+        { id: 29, name: "Glossy Lamination Sheet", price: 10, img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=300&q=80" },
+        { id: 30, name: "Impression Carbon Paper", price: 5, img: "https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=300&q=80" },
+        { id: 31, name: "Matchbox Safety Pack", price: 2, img: "https://images.unsplash.com/photo-1595475207225-428b62bda831?auto=format&fit=crop&w=300&q=80" },
+        { id: 32, name: "Assorted Sweet Candies", price: 1, img: "https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&w=300&q=80" },
+        { id: 33, name: "Namkeen Spicy Mixture", price: 10, img: "https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=300&q=80" },
+        { id: 34, name: "Mineral Drinking Water", price: 20, img: "https://images.unsplash.com/photo-1608885898957-a599fb1b4641?auto=format&fit=crop&w=300&q=80" }
+    ];
+
+    let currentCartState = {};
+
+    // Physics Animation Driver Logic Execution Timeline
+    window.addEventListener('DOMContentLoaded', () => {
+        const sphere = document.getElementById('sphere-element');
+        const shadow = document.getElementById('shadow-element');
+        const wave = document.getElementById('shockwave-element');
+        const brandText = document.getElementById('brand-text-element');
+        const portalContainer = document.getElementById('intro-portal');
+
+        // Detonate the physics element down precisely after standard loops complete
+        setTimeout(() => {
+            sphere.style.animation = 'none';
+            shadow.style.animation = 'none';
+            shadow.style.opacity = '0';
+            
+            sphere.classList.add('burst-active');
+            wave.classList.add('wave-trigger');
+            
+            setTimeout(() => {
+                brandText.classList.add('brand-reveal');
+                setTimeout(() => {
+                    portalContainer.style.transition = 'opacity 0.6s ease';
+                    portalContainer.style.opacity = '0';
+                    setTimeout(() => portalContainer.remove(), 600);
+                }, 1400);
+            }, 2500);
+        }, 2400);
+
+        renderGridCatalog();
+    });
+
+    // Populate UI Using Premium Product Card Configurations
+    function renderGridCatalog() {
+        const targetGrid = document.getElementById('catalog-injector');
+        targetGrid.innerHTML = customStockIndex.map(item => {
+            currentCartState[item.id] = 0; // Initialize tracking matrix
+            return `
+                <div class="product-card">
+                    <div class="img-container">
+                        <img src="${item.img}" alt="${item.name}" loading="lazy">
+                    </div>
+                    <div class="product-title">${item.name}</div>
+                    <div class="product-price">₹${item.price.toFixed(2)}</div>
+                    <button class="add-btn" onclick="modifyBagQuantity(${item.id})">Add to Cart</button>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function modifyBagQuantity(id) {
+        currentCartState[id] += 1;
+        reconstructBagRowsUI();
+    }
+
+    function adjustRowUnits(id, val) {
+        currentCartState[id] += val;
+        if(currentCartState[id] < 0) currentCartState[id] = 0;
+        reconstructBagRowsUI();
+    }
+
+    // Dynamic compilation matrix calculations matching exact rows from 1000000592.jpg
+    function reconstructBagRowsUI() {
+        const bagTarget = document.getElementById('bag-injector');
+        const totalTarget = document.getElementById('bag-computed-total');
+        
+        let cumulativeSum = 0;
+        let visibleRowsHTML = "";
+
+        customStockIndex.forEach(prod => {
+            const quantity = currentCartState[prod.id];
+            if(quantity > 0) {
+                const lineTotal = prod.price * quantity;
+                cumulativeSum += lineTotal;
+
+                visibleRowsHTML += `
+                    <div class="bag-row">
+                        <div class="bag-item-meta">
+                            <img src="${prod.img}" class="bag-thumb" alt="${prod.name}">
+                            <span class="bag-item-title">${prod.name} (x${quantity})</span>
+                        </div>
+                        <span class="bag-qty-multiplier">x${quantity}</span>
+                        <span class="bag-item-price">₹${lineTotal.toFixed(2)}</span>
+                    </div>
+                `;
+            }
+        });
+
+        if(cumulativeSum === 0) {
+            bagTarget.innerHTML = `<p class="bag-blank">Your shopping bag is currently empty</p>`;
+            totalTarget.innerText = "₹0.00";
+            return;
+        }
+
+        bagTarget.innerHTML = visibleRowsHTML;
+        totalTarget.innerText = `₹${cumulativeSum.toFixed(2)}`;
+    }
+
+    // Encodes dataset array parameters directly into official WhatsApp text payload structures
+    function dispatchOrderToWhatsApp() {
+        let itemsExist = false;
+        let payload = "🛍️ *New Order Details - Apna Kirana*\n";
+        payload += "━━━━━━━━━━━━━━━━━━━━━\n";
+
+        let calculatedGrandTotal = 0;
+        let itemIndex = 1;
+
+        customStockIndex.forEach(prod => {
+            const quantity = currentCartState[prod.id];
+            if(quantity > 0) {
+                itemsExist = true;
+                const totalItemCost = prod.price * quantity;
+                calculatedGrandTotal += totalItemCost;
+                payload += `${itemIndex}. 📦 *${prod.name}*\n    Units: ${quantity} ➔ *₹${totalItemCost.toFixed(2)}*\n`;
+                itemIndex++;
+            }
+        });
+
+        payload += "━━━━━━━━━━━━━━━━━━━━━\n";
+        payload += `💰 *Grand Total: ₹${calculatedGrandTotal.toFixed(2)}*\n\n`;
+        payload += "Please accept and confirm the execution of this order request!";
+
+        if(!itemsExist) {
+            alert("Your checkout process cannot proceed because your shopping bag is empty.");
+            return;
+        }
+
+        const businessPhoneNumber = "919876543210"; 
+        const routingUrl = `https://api.whatsapp.com/send?phone=${businessPhoneNumber}&text=${encodeURIComponent(payload)}`;
+        
+        window.open(routingUrl, '_blank');
+    }
+</script>
+</body>
+</html>
